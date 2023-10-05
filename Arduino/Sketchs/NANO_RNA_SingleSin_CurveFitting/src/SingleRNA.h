@@ -22,15 +22,20 @@ class SingleRNA {
                 {1.3534938, -1.4600034}
         };  // capa 4 - 1 neurona
 
-        float B1[1] = {0.4221617};
-        float B2[3] = {0.44382837, 0.41102475, 0.17832378};
-        float B3[2] = {0.11961418, -0.1008855};
-        float B4[1] = {0.11395541};
+        float Bias1[1] = {0.4221617};
+        float Bias2[3] = {0.44382837, 0.41102475, 0.17832378};
+        float Bias3[2] = {0.11961418, -0.1008855};
+        float Bias4[1] = {0.11395541};
 
         float linear(float);
         float relu(float);
-        float dot(float[], float[]);
-        float z_fun(float[], float[], float);
+        float dot(float*, float*, unsigned char);
+        float z_fun(float*, float*, unsigned char, float);
+    public:
+        SingleRNA();
+
+        float forward(float);
+
 
 };
 
