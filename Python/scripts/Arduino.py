@@ -29,7 +29,7 @@ class Arduino:
         
     def init_params_(self):
         for i in range(self.num_metrics_):
-            self.data_.append(deque([0] * self.num_metrics_, maxlen=self.max_samples_))
+            self.data_.append(deque([0] * self.max_samples_, maxlen=self.max_samples_))
         
     def start(self):
         print(f"Intentando conectar al puerto {self.port_}")
@@ -42,7 +42,12 @@ class Arduino:
             print("Conectado...");
         except:
             sys.exit("Failed to connect with " + str(self.port_))
-        
+
+    def get_serial_data(self, frame, lines, lineValueText, lineLabel, pltNumber):
+        data = self.data_[pltNumber]
+        lines.set_data(range(self.max_samples_), data)
+        # lineValueText.set_text(lineLabel + ' = ' + str(self.rawData[pltNumber]))
+
     def background_read_(self):
         time.sleep(1.0)
         if self.serial_:
@@ -50,9 +55,9 @@ class Arduino:
             while self.isRun_:
                 line = self.serial_.readline()
                 if line:
-                    raw_data = line.decode('ascii').strip().split("\t")
+                    raw_data = line.decode().strip().split("\t")
                     for i in range(self.num_metrics_):
-                        self.data_[i].append(raw_data[i])                    
+                        self.data_[i].append(float(raw_data[i]))
     
     def get_data(self, index):
         if index not in [i for i in range(self.num_metrics_)]:
